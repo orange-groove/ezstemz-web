@@ -1,0 +1,59 @@
+# Render Blueprint for ezstemz-web.
+#
+# Render Dashboard → Blueprints → New Blueprint Instance → point at this repo
+# and pick this file. Render provisions the service; values marked `sync: false`
+# are kept out of the blueprint on purpose so secrets never live in git — set
+# them once in the dashboard.
+#
+# After the first deploy:
+#   1. Note the auto-assigned URL (e.g. https://ezstemz-web.onrender.com).
+#   2. Set NEXT_PUBLIC_SITE_URL to that URL in the service env (or your custom
+#      domain once attached) and trigger a redeploy.
+#   3. Add the URL + /auth/confirm to Supabase Auth → URL Configuration.
+#   4. Register https://<your-url>/api/stripe/webhook in Stripe → Webhooks,
+#      copy the signing secret into STRIPE_WEBHOOK_SECRET.
+
+services:
+  - type: web
+    name: ezstemz-web
+    runtime: node
+    plan: starter
+    region: oregon
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      # The actual origin Render assigns / your custom domain. Set after the
+      # service is created so the value matches the Render-assigned host.
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      # Supabase project credentials.
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      # Stripe (live keys for production, test keys for a staging service).
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_PRICE_ID
+        sync: false
+      # Set this AFTER you've registered the live webhook endpoint in Stripe
+      # against the Render-assigned URL — the signing secret is per-endpoint
+      # and not known until the webhook is created.
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      # GitHub repo hosting the signed release artifacts (DMG + .exe).
+      - key: GITHUB_REPO
+        value: adamgroves/ezstemz
+      # Only needed if the releases are private. Fine-grained PAT with
+      # `Contents: read` on the ezstemz repo.
+      - key: GITHUB_TOKEN
+        sync: false

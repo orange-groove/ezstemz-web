@@ -1,0 +1,15 @@
+# Minimal Supabase CLI config for the ezstemz-web project. Generate the full
+# version with `supabase init` if/when you need branching, edge functions,
+# vector storage, etc.
+project_id = "ezstemz-web"
+
+[db]
+major_version = 15
+
+[auth]
+enable_signup = true
+# We rely on email + password auth out of the box. Email confirmations are
+# important — the signup flow expects the /auth/confirm handler to be the
+# Site URL → Redirect URLs allowlist target.
+[auth.email]
+enable_confirmations = true
