@@ -82,13 +82,29 @@ npm run start        # serve the production build
    #            Project → SQL Editor → Run.
    ```
 
-4. In **Authentication → URL Configuration**, set:
-   - **Site URL** → `https://your-domain.com` (or `http://localhost:3000` in dev)
-   - **Redirect URLs** → add `http://localhost:3000/auth/confirm` and your
-     production equivalent. The signup form points the Supabase magic link at
-     `/auth/confirm` which calls `verifyOtp()` server-side.
+4. In **Authentication → URL Configuration** (one Supabase project serves both
+   local dev and production):
+   - **Site URL** → your **production** origin only (e.g.
+     `https://ezstemz.com`). Do not set this to localhost — it is the fallback
+     when no `emailRedirectTo` matches the allow-list.
+   - **Redirect URLs** → add **both** environments:
+     - `http://localhost:3000/**` (local dev)
+     - `https://your-domain.com/**` (production)
+   The app builds confirmation links from `NEXT_PUBLIC_SITE_URL`, so localhost
+   signups get localhost links and production signups get production links, as
+   long as both patterns are allow-listed.
 5. In **Authentication → Providers → Email**, keep "Confirm email" on (the
    signup flow renders a "check your inbox" state when confirmation is required).
+6. **Email delivery (important for local dev):** Supabase's built-in mailer is
+   rate-limited (~2 emails/hour on the free tier). If signup shows "Check your
+   inbox" but nothing arrives:
+   - Check spam.
+   - Wait for the rate limit to reset, or use a fresh email address.
+   - **Recommended:** configure custom SMTP under **Project Settings →
+     Authentication → SMTP** (Resend, SendGrid, etc.).
+   - **Alternative for local dev:** run `supabase start`, point `.env.local` at
+     the local API URL/key printed by the CLI, and read confirmation mail in
+     Inbucket at `http://127.0.0.1:54324`.
 
 ### RLS notes
 
@@ -185,8 +201,9 @@ custom domain once attached). Now finish the wiring:
    `success_url` / `cancel_url` and the Supabase magic-link
    `emailRedirectTo` are built from at runtime.
 2. **Supabase → Authentication → URL Configuration**:
-   - Site URL → `https://<your-render-url>`
-   - Redirect URLs → add `https://<your-render-url>/auth/confirm`
+   - Site URL → `https://<your-render-url>` (production only)
+   - Redirect URLs → add `https://<your-render-url>/**` and keep
+     `http://localhost:3000/**` if you develop against the same project
 3. **Stripe → Developers → Webhooks → Add endpoint**:
    - Endpoint URL → `https://<your-render-url>/api/stripe/webhook`
    - Events → `checkout.session.completed`, `charge.refunded`

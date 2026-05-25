@@ -1,6 +1,7 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
 
+import { resolvePostAuthRedirect } from "@/lib/auth-redirect";
 import { createClient } from "@/lib/supabase/server";
 
 // Handles the link Supabase emails for signup confirmation + password reset.
@@ -20,9 +21,23 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const redirectTo = searchParams.get("redirectTo") ?? searchParams.get("next") ?? "/account";
-
   const supabase = await createClient();
+
+  const redirectAfterAuth = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const metadataRedirect =
+      typeof user?.user_metadata?.redirect_to === "string"
+        ? user.user_metadata.redirect_to
+        : null;
+    const redirectTo = resolvePostAuthRedirect(
+      searchParams.get("redirectTo"),
+      searchParams.get("next"),
+      metadataRedirect,
+    );
+    return NextResponse.redirect(new URL(redirectTo, origin));
+  };
 
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
@@ -31,7 +46,7 @@ export async function GET(request: NextRequest) {
         new URL(`/login?error=${encodeURIComponent(error.message)}`, origin),
       );
     }
-    return NextResponse.redirect(new URL(redirectTo, origin));
+    return redirectAfterAuth();
   }
 
   if (tokenHash && type) {
@@ -41,7 +56,7 @@ export async function GET(request: NextRequest) {
         new URL(`/login?error=${encodeURIComponent(error.message)}`, origin),
       );
     }
-    return NextResponse.redirect(new URL(redirectTo, origin));
+    return redirectAfterAuth();
   }
 
   return NextResponse.redirect(new URL("/login?error=invalid_link", origin));

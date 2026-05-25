@@ -4,7 +4,6 @@ import {
   Container,
   Heading,
   HStack,
-  Icon,
   Link as ChakraLink,
   List,
   Stack,
@@ -112,7 +111,9 @@ export default async function PricingPage() {
               {INCLUDED.map((item) => (
                 <List.Item key={item}>
                   <HStack gap={3} align="flex-start">
-                    <Icon as={LuCheck} color="brand.300" mt={1} />
+                    <Box color="brand.300" mt={1} flexShrink={0}>
+                      <LuCheck />
+                    </Box>
                     <Text>{item}</Text>
                   </HStack>
                 </List.Item>

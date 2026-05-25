@@ -11,9 +11,21 @@ import { system } from "@/lib/theme";
 // selector).
 export function Provider(props: { children: React.ReactNode } & ThemeProviderProps) {
   const { children, ...rest } = props;
+
+  // next-themes injects an inline <script> to prevent theme flicker on load.
+  // React 19 warns when that script re-renders on the client; SSR still emits
+  // a normal executable script, client passes use a non-executed type instead.
+  const scriptProps =
+    typeof window === "undefined" ? undefined : ({ type: "application/json" } as const);
+
   return (
     <ChakraProvider value={system}>
-      <ThemeProvider attribute="class" disableTransitionOnChange {...rest}>
+      <ThemeProvider
+        attribute="class"
+        disableTransitionOnChange
+        scriptProps={scriptProps}
+        {...rest}
+      >
         {children}
       </ThemeProvider>
     </ChakraProvider>

@@ -8,8 +8,14 @@ major_version = 15
 
 [auth]
 enable_signup = true
+site_url = "http://localhost:3000"
+# Wildcard covers /auth/confirm and any future query params. Hosted projects
+# need the same entry under Dashboard → Authentication → URL Configuration.
+additional_redirect_urls = ["http://localhost:3000/**"]
 # We rely on email + password auth out of the box. Email confirmations are
 # important — the signup flow expects the /auth/confirm handler to be the
 # Site URL → Redirect URLs allowlist target.
 [auth.email]
 enable_confirmations = true
+# Local `supabase start` captures outbound auth mail in Inbucket:
+# http://127.0.0.1:54324
