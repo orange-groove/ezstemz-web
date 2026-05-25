@@ -83,7 +83,7 @@ export default async function DownloadPage() {
               <PlatformCard
                 icon={<LuApple />}
                 label="macOS"
-                helper="Apple Silicon + Intel · signed & notarized · .dmg"
+                helper="Apple Silicon + Intel · .dmg"
                 assetName={release?.macos?.name ?? null}
                 assetSize={release?.macos?.size ?? null}
                 downloadHref={

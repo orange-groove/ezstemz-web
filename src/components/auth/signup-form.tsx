@@ -15,17 +15,25 @@ import { type FormEvent, useState } from "react";
 
 import {
   authRedirectMetadata,
+  CUSTOM_SMTP_REQUIRED_MESSAGE,
   getAuthConfirmUrl,
+  isEmailNotAuthorizedError,
   isEmailRateLimitError,
   isExistingAccountSignup,
 } from "@/lib/auth-redirect";
 import { createClient } from "@/lib/supabase/client";
 
-function emailRateLimitMessage(): string {
-  return (
-    "Supabase's built-in email service is rate-limited (about 2 emails/hour on the free tier). " +
-    "Wait a few minutes and try again, or configure custom SMTP under Supabase → Project Settings → Authentication → SMTP."
-  );
+function formatSignUpError(code: string | undefined, message: string): string {
+  if (isEmailNotAuthorizedError(code, message)) {
+    return CUSTOM_SMTP_REQUIRED_MESSAGE;
+  }
+  if (isEmailRateLimitError(message)) {
+    return (
+      "Supabase's built-in email is rate-limited (~2/hour). Wait and retry, or configure custom SMTP " +
+      "(Authentication → SMTP) so real users can sign up."
+    );
+  }
+  return message;
 }
 
 export function SignupForm() {
@@ -60,11 +68,7 @@ export function SignupForm() {
     });
 
     if (signUpError) {
-      setError(
-        isEmailRateLimitError(signUpError.message)
-          ? emailRateLimitMessage()
-          : signUpError.message,
-      );
+      setError(formatSignUpError(signUpError.code, signUpError.message));
       setSubmitting(false);
       return;
     }
@@ -103,11 +107,7 @@ export function SignupForm() {
     });
 
     if (resendError) {
-      setError(
-        isEmailRateLimitError(resendError.message)
-          ? emailRateLimitMessage()
-          : resendError.message,
-      );
+      setError(formatSignUpError(resendError.code, resendError.message));
     } else {
       setResendMessage("Confirmation email sent again. Check your inbox and spam folder.");
     }
@@ -127,12 +127,9 @@ export function SignupForm() {
           your account.
         </Text>
         <Text color="fg.muted" fontSize="sm">
-          Nothing after a few minutes? Check spam, or resend below. Supabase&apos;s default mailer
-          is rate-limited on the free tier — for local dev, configure SMTP or use{" "}
-          <Link href="https://supabase.com/docs/guides/local-development/overview" style={{ color: "var(--chakra-colors-brand-300)" }}>
-            local Supabase + Inbucket
-          </Link>
-          .
+          Nothing after a few minutes? Check spam. If you&apos;re not using custom SMTP, Supabase only
+          sends to emails on your org&apos;s team — everyone else never gets mail even though signup
+          looks successful. Enable SMTP under Authentication → SMTP (Resend takes ~5 minutes).
         </Text>
 
         {error && (

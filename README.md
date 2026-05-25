@@ -6,7 +6,7 @@ desktop app.
 - **Framework**: Next.js 16 (App Router) on React 19
 - **UI**: Chakra UI v3 + `next-themes`
 - **Auth + DB**: Supabase (Postgres, `@supabase/ssr`)
-- **Payments**: Stripe Checkout (one-time, $39 license)
+- **Payments**: Stripe Checkout (one-time, $9.99 license)
 - **Distribution**: short-lived signed redirects to the latest GitHub Release
   asset (`.dmg` on macOS, `.exe` installer on Windows)
 
@@ -95,16 +95,19 @@ npm run start        # serve the production build
    long as both patterns are allow-listed.
 5. In **Authentication → Providers → Email**, keep "Confirm email" on (the
    signup flow renders a "check your inbox" state when confirmation is required).
-6. **Email delivery (important for local dev):** Supabase's built-in mailer is
-   rate-limited (~2 emails/hour on the free tier). If signup shows "Check your
-   inbox" but nothing arrives:
-   - Check spam.
-   - Wait for the rate limit to reset, or use a fresh email address.
-   - **Recommended:** configure custom SMTP under **Project Settings →
-     Authentication → SMTP** (Resend, SendGrid, etc.).
-   - **Alternative for local dev:** run `supabase start`, point `.env.local` at
-     the local API URL/key printed by the CLI, and read confirmation mail in
-     Inbucket at `http://127.0.0.1:54324`.
+6. **Email delivery (required for real signups):** Supabase's built-in SMTP is
+   demo-only. It **only sends to emails on your Supabase organization's team**
+   and is rate-limited (~2/hour). Everyone else sees "Check your inbox" in the
+   app but never receives mail — that is Supabase policy, not an app bug.
+   **You must configure custom SMTP** before launch:
+   - Dashboard → **Authentication → SMTP** → enable custom SMTP.
+   - [Resend](https://resend.com) free tier works well: create API key, use host
+     `smtp.resend.com`, port `465`, user `resend`, password = API key, from
+     `onboarding@resend.dev` (or your verified domain).
+   - After saving, sign up with a non-team email and check **Authentication →
+     Logs** if delivery still fails.
+   - Quick test-only workaround: add your personal email to the org **Team** tab
+     (not suitable for production).
 
 ### RLS notes
 
@@ -120,7 +123,7 @@ forge a license row even if they bypass the API.
 
 1. Create a Stripe account, switch to **Test mode** for dev.
 2. **Products → + Add product**: e.g. _"EZStemz Desktop License"_, one-time
-   price of $39 USD. Copy the **price ID** → `STRIPE_PRICE_ID`.
+   price of $9.99 USD. Copy the **price ID** → `STRIPE_PRICE_ID`.
 3. **Developers → API keys**:
    - Secret key → `STRIPE_SECRET_KEY`
    - Publishable key → `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (optional; not

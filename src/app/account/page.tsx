@@ -15,6 +15,7 @@ import { redirect } from "next/navigation";
 
 import { MarketingShell } from "@/components/site/marketing-shell";
 import { getLicenseStatus } from "@/lib/license";
+import { LICENSE_PRICE } from "@/lib/pricing";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Your account" };
@@ -82,7 +83,7 @@ export default async function AccountPage() {
                   </Button>
                 ) : (
                   <Button asChild colorPalette="brand" size="lg">
-                    <Link href="/pricing">Buy — $39</Link>
+                    <Link href="/pricing">Buy — {LICENSE_PRICE}</Link>
                   </Button>
                 )}
               </Box>

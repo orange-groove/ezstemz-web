@@ -15,20 +15,19 @@ import { LuCheck } from "react-icons/lu";
 import { BuyButton } from "@/components/site/buy-button";
 import { MarketingShell } from "@/components/site/marketing-shell";
 import { getLicenseStatus } from "@/lib/license";
+import { LICENSE_PRICE } from "@/lib/pricing";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "One-time purchase. Lifetime downloads. macOS + Windows.",
+  description: `${LICENSE_PRICE} one-time. Lifetime downloads. macOS + Windows.`,
 };
 
 const INCLUDED = [
-  "macOS (Apple Silicon + Intel) and Windows builds",
-  "Lifetime app updates",
-  "6-stem htdemucs separation model bundled inside the app",
-  "Sample-accurate multitrack mixer",
-  "Stems exported as 44.1 kHz WAV",
-  "Signed + notarized for both platforms",
+  "macOS and Windows apps",
+  "Lifetime updates",
+  "6-stem separation (drums, bass, vocals, guitar, piano, other)",
+  "Built-in mixer + 44.1 kHz WAV export",
   "Use on all of your personal computers",
 ];
 
@@ -42,69 +41,37 @@ export default async function PricingPage() {
 
   return (
     <MarketingShell>
-      <Container maxW="4xl" py={{ base: 16, md: 24 }}>
-        <Stack gap={3} textAlign="center" mb={12}>
-          <Text
-            color="brand.400"
-            fontWeight="semibold"
-            fontSize="sm"
-            letterSpacing="0.1em"
-            textTransform="uppercase"
-          >
-            Pricing
-          </Text>
+      <Container maxW="3xl" py={{ base: 16, md: 24 }}>
+        <Stack gap={3} textAlign="center" mb={10}>
           <Heading size={{ base: "3xl", md: "4xl" }} letterSpacing="-0.03em">
-            One price. One purchase. Forever.
+            {LICENSE_PRICE}, once.
           </Heading>
-          <Text color="fg.muted" fontSize="lg" maxW="2xl" mx="auto">
-            EZStemz is a desktop app, not a SaaS. Buy it once and it keeps working — even when
-            this website is gone, even when you're offline, even when we ship our 30th update.
+          <Text color="fg.muted" fontSize="lg" maxW="xl" mx="auto">
+            A desktop app — not a subscription. Pay once, download anytime, run offline forever.
           </Text>
         </Stack>
 
         <Box
-          position="relative"
           borderWidth="1px"
           borderColor="brand.500"
           borderRadius="2xl"
-          p={{ base: 8, md: 10 }}
+          p={{ base: 6, md: 8 }}
           bg="bg.subtle"
-          overflow="hidden"
         >
-          <Box
-            position="absolute"
-            inset={0}
-            bgGradient="linear-gradient(135deg, {colors.brand.900}, transparent 60%)"
-            opacity={0.35}
-            pointerEvents="none"
-          />
-          <Stack gap={6} position="relative">
+          <Stack gap={6}>
             <HStack justify="space-between" align="flex-start" flexWrap="wrap" gap={4}>
               <Stack gap={1}>
-                <Badge
-                  colorPalette="brand"
-                  variant="subtle"
-                  alignSelf="flex-start"
-                  px={3}
-                  py={1}
-                  borderRadius="full"
-                >
-                  EZStemz · Lifetime
+                <Badge colorPalette="brand" variant="subtle" alignSelf="flex-start" borderRadius="full">
+                  Lifetime license
                 </Badge>
-                <Heading size="2xl">EZStemz Desktop</Heading>
-                <Text color="fg.muted">Everything you need to crack open a track at home.</Text>
+                <Heading size="xl">EZStemz</Heading>
               </Stack>
-              <Stack gap={0} alignItems="flex-end">
-                <HStack alignItems="baseline">
-                  <Heading size="4xl" letterSpacing="-0.04em">
-                    $39
-                  </Heading>
-                  <Text color="fg.muted">USD</Text>
-                </HStack>
-                <Text color="fg.muted" fontSize="sm">
-                  one-time · billed via Stripe
-                </Text>
-              </Stack>
+              <HStack alignItems="baseline" gap={1}>
+                <Heading size="4xl" letterSpacing="-0.04em">
+                  {LICENSE_PRICE}
+                </Heading>
+                <Text color="fg.muted">USD</Text>
+              </HStack>
             </HStack>
 
             <List.Root gap={2} variant="plain">
@@ -120,30 +87,26 @@ export default async function PricingPage() {
               ))}
             </List.Root>
 
-            <Box pt={2}>
-              <BuyButton hasLicense={status?.hasLicense ?? false} isLoggedIn={Boolean(user)} />
-            </Box>
+            <BuyButton hasLicense={status?.hasLicense ?? false} isLoggedIn={Boolean(user)} />
+
             <Text fontSize="sm" color="fg.muted">
-              Buying creates an account tied to your email so you can re-download from any
-              computer. Refundable within 14 days, no questions asked.
+              Account required for download access. 14-day refund if it doesn&apos;t work on your
+              machine —{" "}
+              <ChakraLink href="mailto:hello@ezstemz.com" color="brand.300">
+                hello@ezstemz.com
+              </ChakraLink>
+              .
             </Text>
           </Stack>
         </Box>
 
-        <Stack gap={4} mt={14}>
-          <Heading size="lg">Other questions</Heading>
-          <Text color="fg.muted">
-            See the{" "}
-            <ChakraLink href="/#faq" color="brand.300">
-              FAQ on the home page
-            </ChakraLink>{" "}
-            or email{" "}
-            <ChakraLink href="mailto:hello@ezstemz.com" color="brand.300">
-              hello@ezstemz.com
-            </ChakraLink>
-            .
-          </Text>
-        </Stack>
+        <Text color="fg.muted" fontSize="sm" textAlign="center" mt={8}>
+          More questions? See the{" "}
+          <ChakraLink href="/#faq" color="brand.300">
+            FAQ
+          </ChakraLink>
+          .
+        </Text>
       </Container>
     </MarketingShell>
   );

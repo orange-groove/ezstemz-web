@@ -11,53 +11,29 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import {
-  LuCpu,
-  LuFileAudio,
-  LuLock,
-  LuSlidersHorizontal,
-  LuSparkles,
-  LuZap,
-} from "react-icons/lu";
+import { LuLock, LuSlidersHorizontal, LuSparkles } from "react-icons/lu";
 
 import { MarketingShell } from "@/components/site/marketing-shell";
+import { LICENSE_PRICE } from "@/lib/pricing";
 
 const FEATURES = [
   {
     icon: LuLock,
     title: "100% local",
     body:
-      "Your songs never leave your machine. No accounts, no API keys, no upload progress bar. Drop a file, hit go.",
-  },
-  {
-    icon: LuCpu,
-    title: "Runs on CPU",
-    body:
-      "Powered by demucs.cpp. Apple Silicon, Intel Mac, and modern Windows PCs all handle a 3-minute track in a few minutes.",
+      "Your songs never leave your machine. No accounts, no API keys. Drop a file, hit go.",
   },
   {
     icon: LuSparkles,
     title: "6-stem model",
     body:
-      "Drums, bass, vocals, guitar, piano, and other — the htdemucs_6s model gives you separate guitar and piano stems, not just 'other'.",
+      "Drums, bass, vocals, guitar, piano, and other — separate guitar and piano stems, not just 'other'.",
   },
   {
     icon: LuSlidersHorizontal,
-    title: "Sample-accurate mixer",
+    title: "Mix and export",
     body:
-      "Each stem becomes a track with mute, solo, gain, and a scrubable waveform. Master transport on the bottom.",
-  },
-  {
-    icon: LuFileAudio,
-    title: "Cache friendly",
-    body:
-      "Stems are written as 44.1 kHz WAVs to your app-support folder. Pull them into Logic, Ableton, or Reaper any time.",
-  },
-  {
-    icon: LuZap,
-    title: "Signed + notarized",
-    body:
-      "Signed with a Developer ID and notarized by Apple. The Windows installer is built with NSIS. No 'unknown developer' scares.",
+      "Mute, solo, and gain per stem with a scrubable waveform. Export 44.1 kHz WAVs to your DAW.",
   },
 ];
 
@@ -68,7 +44,7 @@ const FAQ = [
   },
   {
     q: "Will my GPU make it faster?",
-    a: "Not yet. EZStemz uses demucs.cpp on the CPU. Apple Silicon Macs are notably quick because of the Accelerate framework; on Intel and Windows we use OpenBLAS.",
+    a: "Not yet. Everything runs on the CPU today. Apple Silicon is fastest; Intel and Windows take a bit longer.",
   },
   {
     q: "Which formats can I drop in?",
@@ -133,12 +109,11 @@ export default function HomePage() {
             </Heading>
             <Text fontSize={{ base: "lg", md: "xl" }} color="fg.muted">
               Drag in an MP3. Get drums, bass, vocals, guitar, piano, and "other" as separate
-              44.1&nbsp;kHz WAVs in a few minutes. No cloud upload, no recurring fee, no fiddling
-              with Python.
+              44.1&nbsp;kHz WAVs in a few minutes. No cloud upload, no recurring fee.
             </Text>
             <HStack gap={3} pt={2} flexWrap="wrap">
               <Button asChild size="lg" colorPalette="brand">
-                <Link href="/pricing">Get EZStemz — $39</Link>
+                <Link href="/pricing">Get EZStemz — {LICENSE_PRICE}</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link href="#features">See how it works</Link>
@@ -151,7 +126,7 @@ export default function HomePage() {
               </HStack>
               <HStack gap={2}>
                 <Box w="6px" h="6px" borderRadius="full" bg="green.400" />
-                <Text>Signed &amp; notarized</Text>
+                <Text>macOS + Windows</Text>
               </HStack>
               <HStack gap={2}>
                 <Box w="6px" h="6px" borderRadius="full" bg="green.400" />
@@ -174,7 +149,7 @@ export default function HomePage() {
             Why EZStemz
           </Text>
           <Heading size={{ base: "2xl", md: "3xl" }} letterSpacing="-0.02em">
-            A real desktop app, not a wrapper around someone else's API.
+            Everything runs on your machine.
           </Heading>
         </Stack>
 
@@ -251,7 +226,7 @@ export default function HomePage() {
                 },
                 {
                   step: "02",
-                  title: "EZStemz runs htdemucs_6s on your CPU",
+                  title: "EZStemz separates the stems",
                   body: "About 2–5 minutes for a 3-minute song on Apple Silicon. Longer on Intel.",
                 },
                 {
@@ -338,7 +313,7 @@ export default function HomePage() {
             One purchase, lifetime updates, runs forever offline.
           </Text>
           <Button asChild size="lg" colorPalette="brand">
-            <Link href="/pricing">Buy EZStemz — $39</Link>
+            <Link href="/pricing">Buy EZStemz — {LICENSE_PRICE}</Link>
           </Button>
         </Container>
       </Box>

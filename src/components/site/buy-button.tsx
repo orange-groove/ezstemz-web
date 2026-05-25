@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { LICENSE_PRICE } from "@/lib/pricing";
+
 type Props = {
   hasLicense: boolean;
   isLoggedIn: boolean;
@@ -64,7 +66,7 @@ export function BuyButton({ hasLicense, isLoggedIn }: Props) {
   return (
     <HStack gap={3} align="flex-start" flexWrap="wrap">
       <Button onClick={onClick} size="lg" colorPalette="brand" loading={isPending}>
-        Buy EZStemz — $39
+        Buy EZStemz — {LICENSE_PRICE}
       </Button>
       {error && (
         <Text color="red.400" fontSize="sm" maxW="md">
