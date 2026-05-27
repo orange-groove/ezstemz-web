@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
+import { fulfillPurchaseFromCheckoutSession } from "@/lib/fulfill-purchase";
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -29,45 +30,15 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient();
 
-  // We only care about a single event for the one-time license model. Add
-  // more cases later if you introduce subscriptions / refunds with revoke.
   switch (event.type) {
     case "checkout.session.completed": {
-      const session = event.data.object;
-      // Defensive: payment_status === 'paid' is what proves money cleared.
-      if (session.payment_status !== "paid") break;
-
-      const userId = session.metadata?.supabase_user_id;
-      if (!userId) {
-        console.error("[stripe-webhook] session missing supabase_user_id metadata", session.id);
-        // 200 anyway — Stripe should not retry; the issue is with our own
-        // checkout creation flow, not the event.
-        break;
-      }
-
-      const paymentIntentId =
-        typeof session.payment_intent === "string"
-          ? session.payment_intent
-          : session.payment_intent?.id ?? null;
-
-      const { error } = await admin.from("purchases").upsert(
-        {
-          user_id: userId,
-          stripe_customer_id: typeof session.customer === "string"
-            ? session.customer
-            : session.customer?.id ?? null,
-          stripe_session_id: session.id,
-          stripe_payment_intent_id: paymentIntentId,
-          amount_total: session.amount_total ?? null,
-          currency: session.currency ?? null,
-          status: "paid",
-        },
-        { onConflict: "stripe_session_id" },
-      );
-
-      if (error) {
-        console.error("[stripe-webhook] failed to write purchase", error);
+      const session = event.data.object as Stripe.Checkout.Session;
+      const result = await fulfillPurchaseFromCheckoutSession(session);
+      if (!result.ok && result.reason === "db_write_failed") {
         return NextResponse.json({ error: "DB write failed." }, { status: 500 });
+      }
+      if (!result.ok && result.reason === "missing_supabase_user_id") {
+        console.error("[stripe-webhook] session missing supabase_user_id metadata", session.id);
       }
       break;
     }
@@ -89,8 +60,6 @@ export async function POST(request: NextRequest) {
     }
 
     default:
-      // Unhandled event type; that's fine — Stripe expects a 2xx so it stops
-      // retrying. Logging keeps an audit trail without spamming.
       console.log("[stripe-webhook] ignoring event", event.type);
   }
 

@@ -14,13 +14,19 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { MarketingShell } from "@/components/site/marketing-shell";
+import { fulfillPurchaseFromCheckoutSession } from "@/lib/fulfill-purchase";
 import { getLicenseStatus } from "@/lib/license";
 import { LICENSE_PRICE } from "@/lib/pricing";
+import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Your account" };
 
-export default async function AccountPage() {
+type PageProps = {
+  searchParams: Promise<{ purchased?: string; session_id?: string }>;
+};
+
+export default async function AccountPage({ searchParams }: PageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -30,6 +36,23 @@ export default async function AccountPage() {
   // this stops the page from rendering a half-broken state if the middleware
   // matcher is ever loosened.
   if (!user) redirect("/login?redirectTo=/account");
+
+  const params = await searchParams;
+  const checkoutSessionId = params.session_id;
+
+  // Backup path when Stripe Checkout succeeded but the webhook never reached
+  // our server (e.g. production site without STRIPE_WEBHOOK_SECRET configured).
+  if (checkoutSessionId) {
+    try {
+      const session = await stripe.checkout.sessions.retrieve(checkoutSessionId);
+      const sessionUserId = session.metadata?.supabase_user_id;
+      if (sessionUserId === user.id) {
+        await fulfillPurchaseFromCheckoutSession(session);
+      }
+    } catch (err) {
+      console.error("[account] checkout session fulfillment failed", err);
+    }
+  }
 
   const license = await getLicenseStatus(user.id);
   const formattedPurchaseDate = license.purchasedAt

@@ -54,7 +54,9 @@ export async function POST() {
     customer: customerId,
     line_items: [{ price: env.stripePriceId, quantity: 1 }],
     allow_promotion_codes: true,
-    success_url: `${env.siteUrl}/account?purchased=1`,
+    // session_id lets /account grant the license if the webhook hasn't fired yet
+    // (common when testing production URL without a live webhook endpoint).
+    success_url: `${env.siteUrl}/account?purchased=1&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${env.siteUrl}/pricing?cancelled=1`,
     // Metadata is the authoritative join key between Stripe and our DB. The
     // webhook reads `supabase_user_id` from here, NOT from the customer
