@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { Provider } from "@/components/ui/provider";
 import { PLATFORMS_SHORT } from "@/lib/platforms";
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Provider defaultTheme="dark" enableSystem={false}>
           {children}
         </Provider>
+        <GoogleAnalytics />
       </body>
     </html>
   );
