@@ -15,6 +15,7 @@ import { LuLock, LuSlidersHorizontal, LuSparkles } from "react-icons/lu";
 
 import { MarketingShell } from "@/components/site/marketing-shell";
 import { LICENSE_PRICE } from "@/lib/pricing";
+import { PLATFORMS_SHORT, PLATFORMS_TAGLINE } from "@/lib/platforms";
 
 const FEATURES = [
   {
@@ -90,7 +91,7 @@ export default function HomePage() {
               letterSpacing="0.08em"
               textTransform="uppercase"
             >
-              Local AI · macOS + Windows
+              Local AI · {PLATFORMS_TAGLINE}
             </Badge>
             <Heading
               as="h1"
@@ -126,7 +127,7 @@ export default function HomePage() {
               </HStack>
               <HStack gap={2}>
                 <Box w="6px" h="6px" borderRadius="full" bg="green.400" />
-                <Text>macOS + Windows</Text>
+                <Text>{PLATFORMS_SHORT}</Text>
               </HStack>
               <HStack gap={2}>
                 <Box w="6px" h="6px" borderRadius="full" bg="green.400" />

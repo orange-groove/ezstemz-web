@@ -16,15 +16,16 @@ import { BuyButton } from "@/components/site/buy-button";
 import { MarketingShell } from "@/components/site/marketing-shell";
 import { getLicenseStatus } from "@/lib/license";
 import { LICENSE_PRICE } from "@/lib/pricing";
+import { PLATFORMS_SHORT } from "@/lib/platforms";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: `${LICENSE_PRICE} one-time. Lifetime downloads. macOS + Windows.`,
+  description: `${LICENSE_PRICE} one-time. Lifetime downloads. ${PLATFORMS_SHORT}.`,
 };
 
 const INCLUDED = [
-  "macOS and Windows apps",
+  "macOS app — Windows coming soon",
   "Lifetime updates",
   "6-stem separation (drums, bass, vocals, guitar, piano, other)",
   "Built-in mixer + 44.1 kHz WAV export",

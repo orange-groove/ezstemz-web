@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Container,
@@ -18,6 +19,7 @@ import { LuApple, LuDownload, LuMonitor } from "react-icons/lu";
 import { MarketingShell } from "@/components/site/marketing-shell";
 import { getLatestReleaseInfo } from "@/lib/github";
 import { getLicenseStatus } from "@/lib/license";
+import { WINDOWS_COMING_SOON } from "@/lib/platforms";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Download EZStemz" };
@@ -98,10 +100,8 @@ export default async function DownloadPage() {
                 icon={<LuMonitor />}
                 label="Windows"
                 helper="Windows 10+ · NSIS installer · .exe"
-                assetName={
-                  release?.windows?.name ??
-                  (release ? "Windows installer not published on this release yet" : null)
-                }
+                comingSoon={!release?.windows}
+                assetName={release?.windows?.name ?? null}
                 assetSize={release?.windows?.size ?? null}
                 downloadHref={
                   release?.windows ? `/api/download?platform=windows` : null
@@ -142,6 +142,7 @@ function PlatformCard({
   icon,
   label,
   helper,
+  comingSoon = false,
   assetName,
   assetSize,
   downloadHref,
@@ -149,6 +150,7 @@ function PlatformCard({
   icon: React.ReactNode;
   label: string;
   helper: string;
+  comingSoon?: boolean;
   assetName: string | null;
   assetSize: number | null;
   downloadHref: string | null;
@@ -177,7 +179,14 @@ function PlatformCard({
           {icon}
         </Box>
         <Stack gap={0}>
-          <Heading size="md">{label}</Heading>
+          <HStack gap={2} flexWrap="wrap">
+            <Heading size="md">{label}</Heading>
+            {comingSoon && (
+              <Badge colorPalette="brand" variant="subtle" borderRadius="full" fontSize="xs">
+                {WINDOWS_COMING_SOON}
+              </Badge>
+            )}
+          </HStack>
           <Text fontSize="xs" color="fg.muted">
             {helper}
           </Text>
@@ -195,7 +204,7 @@ function PlatformCard({
         py={2}
         bg="bg"
       >
-        {assetName ?? "No asset published for this platform yet"}
+        {assetName ?? (comingSoon ? "Windows build not available yet" : "No asset published for this platform yet")}
         {assetSize ? <> · {formatBytes(assetSize)}</> : null}
       </Box>
 
@@ -209,7 +218,8 @@ function PlatformCard({
         >
           {disabled ? (
             <Box>
-              <LuDownload style={{ marginRight: 8 }} /> Not available
+              <LuDownload style={{ marginRight: 8 }} />{" "}
+              {comingSoon ? WINDOWS_COMING_SOON : "Not available"}
             </Box>
           ) : (
             <a href={downloadHref!}>
