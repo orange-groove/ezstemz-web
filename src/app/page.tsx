@@ -14,9 +14,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { LuLock, LuSlidersHorizontal, LuSparkles } from "react-icons/lu";
 
+import { FaqSchema } from "@/components/seo/site-schemas";
 import { MarketingShell } from "@/components/site/marketing-shell";
 import { LICENSE_PRICE } from "@/lib/pricing";
 import { PLATFORMS_SHORT, PLATFORMS_TAGLINE } from "@/lib/platforms";
+import { sharedOpenGraph, sharedTwitter, SITE_NAME } from "@/lib/seo";
+import type { Metadata } from "next";
+
+const HOME_TITLE = `${SITE_NAME} — AI stem separator (local, offline)`;
+const HOME_DESCRIPTION =
+  "Split any song into drums, bass, vocals, guitar, piano, and other stems on your Mac or PC. " +
+  "Local AI stem separation — no cloud upload, no subscription.";
+
+export const metadata: Metadata = {
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: sharedOpenGraph(HOME_TITLE, HOME_DESCRIPTION),
+  twitter: sharedTwitter(HOME_TITLE, HOME_DESCRIPTION),
+};
 
 const FEATURES = [
   {
@@ -65,6 +81,7 @@ const FAQ = [
 export default function HomePage() {
   return (
     <MarketingShell>
+      <FaqSchema entries={FAQ} />
       <Box
         position="relative"
         overflow="hidden"

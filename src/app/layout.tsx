@@ -1,34 +1,45 @@
 import type { Metadata } from "next";
 
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { SiteSchemas } from "@/components/seo/site-schemas";
 import { Provider } from "@/components/ui/provider";
-import { PLATFORMS_SHORT } from "@/lib/platforms";
+import {
+  DEFAULT_DESCRIPTION,
+  SEO_KEYWORDS,
+  sharedOpenGraph,
+  sharedTwitter,
+  SITE_NAME,
+  siteUrl,
+} from "@/lib/seo";
+
+const defaultTitle = `${SITE_NAME} — local AI stem separation for your music`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteUrl()),
   title: {
-    default: "EZStemz — local AI stem separation for your music",
-    template: "%s · EZStemz",
+    default: defaultTitle,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "EZStemz is a native macOS and Windows app that splits any song into its drums, bass, vocals, guitar, piano, and 'other' stems — locally, on your own CPU. No cloud upload, no subscription.",
-  openGraph: {
-    title: "EZStemz — local AI stem separation",
-    description:
-      "Drop in an MP3 and get clean drums/bass/vocals/guitar/piano/other stems in minutes. Runs entirely on your machine.",
-    type: "website",
+  description: DEFAULT_DESCRIPTION,
+  keywords: [...SEO_KEYWORDS],
+  applicationName: SITE_NAME,
+  alternates: {
+    canonical: "/",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "EZStemz",
-    description: `Local AI stem separation — ${PLATFORMS_SHORT}.`,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
+  openGraph: sharedOpenGraph(defaultTitle, DEFAULT_DESCRIPTION),
+  twitter: sharedTwitter(defaultTitle, DEFAULT_DESCRIPTION),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <SiteSchemas />
         <Provider defaultTheme="dark" enableSystem={false}>
           {children}
         </Provider>

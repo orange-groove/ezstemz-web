@@ -17,11 +17,20 @@ import { MarketingShell } from "@/components/site/marketing-shell";
 import { getLicenseStatus } from "@/lib/license";
 import { LICENSE_PRICE } from "@/lib/pricing";
 import { PLATFORMS_SHORT } from "@/lib/platforms";
+import { sharedOpenGraph, sharedTwitter } from "@/lib/seo";
 import { createClient } from "@/lib/supabase/server";
 
+const PRICING_TITLE = `Pricing — ${LICENSE_PRICE} one-time stem separation license`;
+const PRICING_DESCRIPTION =
+  `Buy EZStemz for ${LICENSE_PRICE} once. Lifetime updates and downloads on ${PLATFORMS_SHORT}. ` +
+  `Local AI stem splitter with drums, bass, vocals, guitar, piano, and other stems.`;
+
 export const metadata: Metadata = {
-  title: "Pricing",
-  description: `${LICENSE_PRICE} one-time. Lifetime downloads. ${PLATFORMS_SHORT}.`,
+  title: PRICING_TITLE,
+  description: PRICING_DESCRIPTION,
+  alternates: { canonical: "/pricing" },
+  openGraph: sharedOpenGraph(PRICING_TITLE, PRICING_DESCRIPTION),
+  twitter: sharedTwitter(PRICING_TITLE, PRICING_DESCRIPTION),
 };
 
 const INCLUDED = [
