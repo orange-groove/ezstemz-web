@@ -31,17 +31,9 @@ export async function SiteNav() {
       <Container maxW="6xl" py={3}>
         <Flex align="center" gap={6}>
           <Link href="/" style={{ textDecoration: "none" }}>
-            <HStack gap={2}>
-              <Box
-                w="28px"
-                h="28px"
-                borderRadius="md"
-                bgGradient="linear-gradient(135deg, {colors.brand.400}, {colors.brand.700})"
-              />
-              <Box fontWeight="bold" letterSpacing="-0.02em" fontSize="lg">
-                EZStemz
-              </Box>
-            </HStack>
+            <Box fontWeight="bold" letterSpacing="-0.02em" fontSize="lg">
+              EZStemz
+            </Box>
           </Link>
 
           <HStack gap={5} display={{ base: "none", md: "flex" }}>

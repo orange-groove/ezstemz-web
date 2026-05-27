@@ -2,25 +2,23 @@
 
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
-// Brand palette is a warm magenta → orange gradient that pairs with the
-// audio-waveform-on-dark vibe of the desktop app. Tweak the 500 hue if the
-// product gets a stronger brand identity later.
+// Brand palette — blue, aligned with the EZStemz app icon.
 const config = defineConfig({
   theme: {
     tokens: {
       colors: {
         brand: {
-          50: { value: "#fff1f2" },
-          100: { value: "#ffe1e6" },
-          200: { value: "#ffc2cc" },
-          300: { value: "#ff97aa" },
-          400: { value: "#ff5d7f" },
-          500: { value: "#ff2d6b" },
-          600: { value: "#e91661" },
-          700: { value: "#c30c54" },
-          800: { value: "#a00d4b" },
-          900: { value: "#820e44" },
-          950: { value: "#480020" },
+          50: { value: "#eff6ff" },
+          100: { value: "#dbeafe" },
+          200: { value: "#bfdbfe" },
+          300: { value: "#93c5fd" },
+          400: { value: "#60a5fa" },
+          500: { value: "#3b82f6" },
+          600: { value: "#2563eb" },
+          700: { value: "#1d4ed8" },
+          800: { value: "#1e40af" },
+          900: { value: "#1e3a8a" },
+          950: { value: "#172554" },
         },
       },
       fonts: {
