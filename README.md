@@ -6,7 +6,7 @@ desktop app.
 - **Framework**: Next.js 16 (App Router) on React 19
 - **UI**: Chakra UI v3 + `next-themes`
 - **Auth + DB**: Supabase (Postgres, `@supabase/ssr`)
-- **Payments**: Stripe Checkout (one-time, $9.99 license)
+- **Payments**: Stripe Checkout (one-time, $20 license)
 - **Distribution**: short-lived signed redirects to the latest GitHub Release
   asset (`.dmg` on macOS, `.exe` installer on Windows)
 
@@ -123,7 +123,7 @@ forge a license row even if they bypass the API.
 
 1. Create a Stripe account, switch to **Test mode** for dev.
 2. **Products → + Add product**: e.g. _"EZStemz Desktop License"_, one-time
-   price of $9.99 USD. Copy the **price ID** → `STRIPE_PRICE_ID`.
+   price of $20 USD. Copy the **price ID** → `STRIPE_PRICE_ID`.
 3. **Developers → API keys**:
    - Secret key → `STRIPE_SECRET_KEY`
    - Publishable key → `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (optional; not
