@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s · EZStemz",
   },
   description:
-    "EZStemz is a native macOS app that splits any song into its drums, bass, vocals, guitar, piano, and 'other' stems — locally, on your own CPU. Windows coming soon. No accounts, no cloud, no upload.",
+    "EZStemz is a native macOS and Windows app that splits any song into its drums, bass, vocals, guitar, piano, and 'other' stems — locally, on your own CPU. No cloud upload, no subscription.",
   openGraph: {
     title: "EZStemz — local AI stem separation",
     description:

@@ -170,7 +170,7 @@ if the repo lives elsewhere.
   URL that's valid for a few minutes. Users never see the token.
 
 The asset name matchers in `src/lib/github.ts` look for `*.dmg` (macOS) and
-`*setup*.exe` / `*installer*.exe` (Windows) — which lines up with the
+`*-Setup.exe` (Windows NSIS installer) — which lines up with the
 artefacts produced by `ezstemz/.github/workflows/release.yml`.
 
 ## 5. Deploying to Render

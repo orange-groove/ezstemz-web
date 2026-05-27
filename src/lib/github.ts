@@ -67,7 +67,7 @@ function pickAssetForPlatform(release: GitHubRelease, platform: Platform): GitHu
     // macOS DMG produced by scripts/release in the ezstemz repo.
     macos: /\.dmg$/i,
     // NSIS installer named EZStemz-<version>-Setup.exe.
-    windows: /(setup|installer)?.*\.exe$/i,
+    windows: /-Setup\.exe$/i,
   };
   return release.assets.find((a) => matchers[platform].test(a.name)) ?? null;
 }

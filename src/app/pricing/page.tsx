@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 const INCLUDED = [
-  "macOS app — Windows coming soon",
+  "macOS and Windows desktop apps",
   "Lifetime updates",
   "6-stem separation (drums, bass, vocals, guitar, piano, other)",
   "Built-in mixer + 44.1 kHz WAV export",
