@@ -10,6 +10,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
 import { LuLock, LuSlidersHorizontal, LuSparkles } from "react-icons/lu";
 
@@ -78,7 +79,12 @@ export default function HomePage() {
           pointerEvents="none"
         />
         <Container maxW="6xl" py={{ base: 16, md: 28 }} position="relative">
-          <Stack gap={6} maxW="3xl">
+          <Grid
+            templateColumns={{ base: "1fr", lg: "1fr 1.15fr" }}
+            gap={{ base: 10, lg: 12 }}
+            alignItems="center"
+          >
+            <Stack gap={6}>
             <Badge
               colorPalette="brand"
               variant="subtle"
@@ -134,7 +140,39 @@ export default function HomePage() {
                 <Text>14-day refund</Text>
               </HStack>
             </HStack>
-          </Stack>
+            </Stack>
+
+            <Box position="relative">
+              <Box
+                position="absolute"
+                inset={{ base: "8%", md: "6%" }}
+                borderRadius="2xl"
+                bg="brand.500"
+                opacity={0.2}
+                filter="blur(48px)"
+                pointerEvents="none"
+              />
+              <Box
+                position="relative"
+                borderWidth="1px"
+                borderColor="border.subtle"
+                borderRadius="xl"
+                overflow="hidden"
+                bg="bg.subtle"
+                boxShadow="0 24px 80px rgba(0, 0, 0, 0.45)"
+              >
+                <Image
+                  src="/screenshot.png"
+                  alt="EZStemz showing six stem tracks with waveforms and a mixer window"
+                  width={3438}
+                  height={1910}
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  priority
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
+              </Box>
+            </Box>
+          </Grid>
         </Container>
       </Box>
 
