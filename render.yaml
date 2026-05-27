@@ -52,7 +52,7 @@ services:
         sync: false
       # GitHub repo hosting the signed release artifacts (DMG + .exe).
       - key: GITHUB_REPO
-        value: adamgroves/ezstemz
+        value: orange-groove/ez-stemz
       # Only needed if the releases are private. Fine-grained PAT with
       # `Contents: read` on the ezstemz repo.
       - key: GITHUB_TOKEN

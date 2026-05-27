@@ -42,7 +42,20 @@ export async function getLatestRelease(): Promise<GitHubRelease | null> {
     next: { revalidate: 300 },
   });
 
-  if (res.status === 404) return null;
+  if (res.status === 404) {
+    if (!env.githubToken) {
+      throw new Error(
+        `No release found for ${env.githubRepo}. If the repo is private, set GITHUB_TOKEN ` +
+          `(fine-grained PAT with Contents: read). Also verify GITHUB_REPO is correct.`,
+      );
+    }
+    return null;
+  }
+  if (res.status === 401 || res.status === 403) {
+    throw new Error(
+      `GitHub denied access to ${env.githubRepo} (${res.status}). Check GITHUB_TOKEN scopes.`,
+    );
+  }
   if (!res.ok) {
     throw new Error(`GitHub releases lookup failed: ${res.status} ${res.statusText}`);
   }

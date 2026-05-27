@@ -156,7 +156,8 @@ After "Pay" you'll land on `/account?purchased=1` with the badge flipped to
 ## 4. GitHub Releases setup
 
 The download endpoint redirects users to the latest release asset on the
-[`adamgroves/ezstemz`](../ezstemz) repo. Update `GITHUB_REPO` in `.env.local`
+[`orange-groove/ez-stemz`](../ezstemz) repo (private). Set `GITHUB_REPO` and
+`GITHUB_TOKEN` in `.env.local` / Render
 if the repo lives elsewhere.
 
 - **Public releases** — leave `GITHUB_TOKEN` unset. Anyone could find the

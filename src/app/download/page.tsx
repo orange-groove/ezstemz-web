@@ -59,7 +59,9 @@ export default async function DownloadPage() {
             <Text color="fg.muted">
               {release
                 ? `Latest release: ${release.tagName}`
-                : "Resolving the latest release…"}
+                : lookupError
+                  ? "Could not load release info."
+                  : "No published GitHub release found yet."}
             </Text>
           </Stack>
 
@@ -96,7 +98,10 @@ export default async function DownloadPage() {
                 icon={<LuMonitor />}
                 label="Windows"
                 helper="Windows 10+ · NSIS installer · .exe"
-                assetName={release?.windows?.name ?? null}
+                assetName={
+                  release?.windows?.name ??
+                  (release ? "Windows installer not published on this release yet" : null)
+                }
                 assetSize={release?.windows?.size ?? null}
                 downloadHref={
                   release?.windows ? `/api/download?platform=windows` : null
