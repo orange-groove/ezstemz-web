@@ -132,8 +132,9 @@ export default function HomePage() {
               </Box>
             </Heading>
             <Text fontSize={{ base: "lg", md: "xl" }} color="fg.muted">
-              Drag in an MP3. Get drums, bass, vocals, guitar, piano, and "other" as separate
-              44.1&nbsp;kHz WAVs in a few minutes. No cloud upload, no recurring fee.
+              Drop in MP3, WAV, FLAC, AIFF, OGG, or M4A (macOS). Get drums, bass, vocals,
+              guitar, piano, and "other" as separate 44.1&nbsp;kHz WAVs in a few minutes. No
+              cloud upload, no recurring fee.
             </Text>
             <HStack gap={3} pt={2} flexWrap="wrap">
               <Button asChild size="lg" colorPalette="brand">
@@ -278,7 +279,7 @@ export default function HomePage() {
                 {
                   step: "01",
                   title: "Drop in your audio",
-                  body: "MP3, WAV, FLAC, AIFF, OGG — anything JUCE can decode.",
+                  body: "MP3, WAV, FLAC, AIFF, OGG, plus M4A on macOS.",
                 },
                 {
                   step: "02",
