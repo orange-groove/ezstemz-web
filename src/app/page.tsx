@@ -39,7 +39,8 @@ const FEATURES = [
     icon: LuLock,
     title: "100% local",
     body:
-      "Your songs never leave your machine. No accounts, no API keys. Drop a file, hit go.",
+      "Separation runs on your CPU — audio is never uploaded for processing. The desktop app works offline. " +
+      "Create a free account here only to buy your license and download installers.",
   },
   {
     icon: LuSparkles,
