@@ -59,7 +59,7 @@ const FEATURES = [
 const FAQ = [
   {
     q: "Does this need an internet connection?",
-    a: "Only once, to download the app and the bundled separation model. After that it runs entirely offline.",
+    a: "No, it runs entirely offline.",
   },
   {
     q: "Will my GPU make it faster?",
