@@ -46,13 +46,13 @@ const FEATURES = [
     icon: LuSparkles,
     title: "6-stem model",
     body:
-      "Drums, bass, vocals, guitar, piano, and other — separate guitar and piano stems, not just 'other'.",
+      "Drums, bass, vocals, guitar, piano, and other",
   },
   {
     icon: LuSlidersHorizontal,
     title: "Mix and export",
     body:
-      "Mute, solo, and gain per stem with a scrubable waveform. Export 44.1 kHz WAVs to your DAW.",
+      "Mute, solo, and gain per stem. Export 44.1 kHz WAVs to your DAW or mix in the app using plugins.",
   },
 ];
 
