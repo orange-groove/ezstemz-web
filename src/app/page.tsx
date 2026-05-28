@@ -278,7 +278,7 @@ export default function HomePage() {
                   step: "03",
                   title: "Mix the stems live",
                   body:
-                    "Per-track gain, mute, solo, scrubable transport, master gain. WAVs sit in your app-support folder for later.",
+                    "Per-track gain, mute, solo, scrubable transport, master gain. WAVs sit in your project folder for later.",
                 },
               ].map((step) => (
                 <HStack
