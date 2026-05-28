@@ -102,20 +102,7 @@ export default function HomePage() {
             alignItems="center"
           >
             <Stack gap={6}>
-            <Badge
-              colorPalette="brand"
-              variant="subtle"
-              alignSelf="flex-start"
-              px={3}
-              py={1}
-              borderRadius="full"
-              fontSize="xs"
-              fontWeight="semibold"
-              letterSpacing="0.08em"
-              textTransform="uppercase"
-            >
-              Local AI · {PLATFORMS_TAGLINE}
-            </Badge>
+            
             <Heading
               as="h1"
               size={{ base: "3xl", md: "5xl" }}
